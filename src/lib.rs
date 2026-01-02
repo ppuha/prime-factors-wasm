@@ -1,12 +1,6 @@
-mod factors;
 mod utils;
 
 use wasm_bindgen::prelude::*;
-
-#[wasm_bindgen]
-extern "C" {
-    fn alert(s: &str);
-}
 
 #[wasm_bindgen]
 pub struct Factor {
@@ -33,19 +27,11 @@ impl Factor {
     pub fn deg(&self) -> u32 {
         self.deg
     }
-
-    pub fn to_string(&self) -> String {
-        if self.deg == 1 {
-            format!("{}", self.prime)
-        } else {
-            format!("{}^{}", self.prime, self.deg)
-        }
-    }
 }
 
 #[wasm_bindgen]
 pub fn factors(n: u32) -> Vec<Factor> {
-    factors::factors(n)
+    utils::factors(n)
         .into_iter()
         .map(|(k, v)| Factor::new(k, v))
         .collect()
