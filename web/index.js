@@ -11,8 +11,31 @@ await init();
 let num = 100;
 let fs = factors(num);
 
-const Factors = ({ num, factors }) => e`
-  <p>${num} = ${factors.map((f) => f.to_string()).join(" * ")}</p>
+const factorOrder = (f0, f1) => f0.prime - f1.prime;
+
+const Factor = ({ factor }) =>
+  factor.deg == 1
+    ? e`
+    <mo>${factor.prime}</mo>`
+    : e`
+    <msup>
+      <mi>${factor.prime}</mi>
+      <mn>${factor.deg}</mn>
+      </msup>
+    `;
+
+const Result = ({ num, factors }) => e`
+  <math>
+    <mrow>
+      <mo>${num}</mo>
+      <mo> = </mo>
+      ${factors.flatMap((f, i) =>
+        i < factors.length - 1
+          ? [e`<${Factor} factor=${f}/>`, e`<mo>*</mo>`]
+          : e`<${Factor} factor=${f}/>`,
+      )}
+    </mrow>
+  </math>
 `;
 
 const Input = ({ setNum, setFs }) => e`
@@ -33,7 +56,7 @@ const App = ({}) => {
   return e`
     <div>
       <${Input} setNum=${setNum} setFs=${setFs}/>
-      <${Factors} num=${num} factors=${fs} />
+      <p><${Result} num=${num} factors=${fs.sort(factorOrder)}/></p>
     </div>
   `;
 };
