@@ -24,6 +24,16 @@ impl Factor {
         }
     }
 
+    #[wasm_bindgen(getter)]
+    pub fn prime(&self) -> u32 {
+        self.prime
+    }
+
+    #[wasm_bindgen(getter)]
+    pub fn deg(&self) -> u32 {
+        self.deg
+    }
+
     pub fn to_string(&self) -> String {
         if self.deg == 1 {
             format!("{}", self.prime)
