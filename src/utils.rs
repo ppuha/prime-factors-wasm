@@ -1,8 +1,10 @@
 use std::collections::HashMap;
 
-pub fn factors(n: u64) -> HashMap<u64, usize> {
+pub fn factors(n: u64, mut cache: Cache) -> HashMap<u64, usize> {
     let max = (n as f64).sqrt().floor() as u64;
-    let primes = primes_below(max);
+
+    cache.update(max);
+    let primes = cache.primes;
 
     let mut result = HashMap::new();
     let mut i = 0;
@@ -50,4 +52,26 @@ fn primes_below(n: u64) -> Vec<u64> {
         .filter(|&(_, b)| b)
         .map(|(i, _)| i as u64)
         .collect()
+}
+
+#[derive(Clone)]
+pub struct Cache {
+    primes: Vec<u64>,
+    bound: u64,
+}
+
+impl Cache {
+    pub fn new() -> Self {
+        Self {
+            primes: Vec::new(),
+            bound: 0,
+        }
+    }
+    fn update(&mut self, bound: u64) {
+        if bound <= self.bound {
+        } else {
+            self.bound = bound;
+            self.primes = primes_below(bound);
+        }
+    }
 }

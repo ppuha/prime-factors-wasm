@@ -1,6 +1,13 @@
 mod utils;
 
+use std::sync::{OnceLock, RwLock};
 use wasm_bindgen::prelude::*;
+
+static CACHE: OnceLock<RwLock<utils::Cache>> = OnceLock::new();
+
+fn cache() -> &'static RwLock<utils::Cache> {
+    CACHE.get_or_init(|| RwLock::new(utils::Cache::new()))
+}
 
 #[wasm_bindgen]
 pub struct Factor {
@@ -31,7 +38,8 @@ impl Factor {
 
 #[wasm_bindgen]
 pub fn factors(n: u64) -> Vec<Factor> {
-    utils::factors(n)
+    let cache = cache().write().unwrap();
+    utils::factors(n, cache.clone())
         .into_iter()
         .map(|(k, v)| Factor::new(k, v))
         .collect()
