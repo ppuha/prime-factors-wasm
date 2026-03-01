@@ -8,10 +8,11 @@ const e = htm.bind(h);
 
 await init();
 
-let num = 100;
+let num = BigInt(100);
 let fs = factors(num);
 
-const factorOrder = (f0, f1) => f0.prime - f1.prime;
+const factorOrder = (f0, f1) =>
+  f0.prime < f1.prime ? -1 : f0.prime > f1.prime ? 1 : 0;
 
 const Factor = ({ factor }) =>
   factor.deg == 1
@@ -50,7 +51,7 @@ const Input = ({ setNum, setFs }) => e`
 `;
 
 const App = ({}) => {
-  let [num, setNum] = useState(0);
+  let [num, setNum] = useState(BigInt(0));
   let [fs, setFs] = useState([]);
 
   return e`

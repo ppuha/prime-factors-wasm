@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 
-pub fn factors(n: u32) -> HashMap<u32, u32> {
-    let max = (n as f32).sqrt().floor() as u32;
+pub fn factors(n: u64) -> HashMap<u64, usize> {
+    let max = (n as f64).sqrt().floor() as u64;
     let primes = primes_below(max);
 
     let mut result = HashMap::new();
@@ -29,12 +29,12 @@ pub fn factors(n: u32) -> HashMap<u32, u32> {
     result
 }
 
-fn primes_below(n: u32) -> Vec<u32> {
+fn primes_below(n: u64) -> Vec<u64> {
     let mut is_prime = vec![true; n as usize];
     is_prime[0] = false;
     is_prime[1] = false;
 
-    let m = (n as f64).sqrt().floor() as u32;
+    let m = (n as f64).sqrt().floor() as u64;
 
     for i in 2..=m {
         let mut j = 2;
@@ -48,6 +48,6 @@ fn primes_below(n: u32) -> Vec<u32> {
         .into_iter()
         .enumerate()
         .filter(|&(_, b)| b)
-        .map(|(i, _)| i as u32)
+        .map(|(i, _)| i as u64)
         .collect()
 }
